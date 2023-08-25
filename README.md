@@ -10,16 +10,13 @@
 
 Philosophic quotes:
 
-![image](https://github.com/Eugene29/LightestTransformer/assets/52263376/b87613f5-9be9-4578-94cb-6dbb5572ae0c)
-
-![Screenshot 2023-08-24 174143](https://github.com/Eugene29/LightestTransformer/assets/52263376/54d47a7c-321a-439a-b84c-7b069233e334)
-
-
 ![image](https://github.com/Eugene29/LightestTransformer/assets/52263376/5be48c0d-dc94-4e70-9e7c-6026c3e59a34)
-
 
 ![Screenshot 2023-08-24 174226](https://github.com/Eugene29/LightestTransformer/assets/52263376/8437eeab-2dab-431d-9fb8-a73276523902)
 
+![Screenshot 2023-08-24 174143](https://github.com/Eugene29/LightestTransformer/assets/52263376/54d47a7c-321a-439a-b84c-7b069233e334)
+
+![image](https://github.com/Eugene29/LightestTransformer/assets/52263376/b87613f5-9be9-4578-94cb-6dbb5572ae0c)
 
 
 Shakespear:
