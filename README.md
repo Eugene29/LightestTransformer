@@ -4,6 +4,10 @@
 2. Set load_path to be model.pth or quotes.pth (model.pth is shakespear and quotes is philosophic quotes)
 3. Change max_new_tokens for how many tokens/character you would like to generate. 
 
+[important] when changing load_path, you'll have to restart your kernel or runtime. 
+------
+### Example of generated texts
+
 Philosophic quotes:
 
 ![image](https://github.com/Eugene29/LightestTransformer/assets/52263376/b87613f5-9be9-4578-94cb-6dbb5572ae0c)
