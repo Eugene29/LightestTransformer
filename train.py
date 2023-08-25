@@ -126,9 +126,24 @@ class Block1(nn.Module):
 
 # bigram model
 class BinaryGramLanguageModel(nn.Module):
-  def __init__(self, load_path):
+  def __init__(self, load_path, dev1):
     super().__init__()
-    data_bank = dict({0: "shakespear", 2: 'quotes'})
+    data_bank = dict({0: "shakespear", 1: 'good_wiki', 2: 'quotes'})
+    ## for best coding practices :DDD. I mean for quick fixes to move on.  
+    global batch_size
+    global block_size
+    global emb_dim
+    global lr
+    global max_iters
+    global eval_interval
+    global eval_iters
+    global n_head
+    global n_layer
+    global dropout
+    global choose_data
+    global dev
+    global decode, encode
+    dev = dev1
     if load_path == "quotes.pth":
       batch_size = 64 # num of sequences to compute in parallel per batch
       block_size = 256 # max_len of each sequence
@@ -140,7 +155,7 @@ class BinaryGramLanguageModel(nn.Module):
       n_head = 6 # num of heads in mha
       n_layer = 6 # num of blocks(mha + ffnn)
       dropout = 0.2 # dropout rate
-      choose_data = data_bank['quotes']
+      choose_data = data_bank[2]
     else:
       batch_size = 64 # num of sequences to compute in parallel per batch
       block_size = 256 # max_len of each sequence
@@ -152,7 +167,7 @@ class BinaryGramLanguageModel(nn.Module):
       n_head = 6 # num of heads in mha
       n_layer = 6 # num of blocks(mha + ffnn)
       dropout = 0.2 # dropout rate
-      choose_data = data_bank['shakespear']
+      choose_data = data_bank[0]
 
     #----------------
     ## extract and read for tar.xz files
@@ -172,7 +187,6 @@ class BinaryGramLanguageModel(nn.Module):
       def decompress_xz_file(file_path):
         with lzma.open(file_path, 'rt', encoding='utf-8') as f:  # 'rt' mode opens it in text mode
             return f.read()
-
       ## workon this one day
       def filter_content(text):
         # Split the text by patterns that look like "0000068-1ad7382d9e2e97d93b002a64642ab65d.txt0000644..."
@@ -273,9 +287,9 @@ class BinaryGramLanguageModel(nn.Module):
       probs = F.softmax(logits, dim=-1) # since logits = (B, C)
       generated = torch.multinomial(probs, num_samples=1)
       idx = torch.cat((idx, generated), dim=1) # dim=1 because we want (B, T+1)
-    return idx
-
+    return decode(idx[0].tolist())
 if __name__ == "__main__":
+  ### IMPORTANT: OUTDATED. You'll need to adapt the model.py syntax when instantiating the object. 
   model = BinaryGramLanguageModel('quotes.pth')
   m = model.to(dev) # moving the model to the device. Moving the model also moves the weights assigned to the device to expediate the compute.
   optimizer = torch.optim.AdamW(m.parameters(), lr=lr) # typical lr is 0.001 but we can get away with higher for models that are smaller.
@@ -291,9 +305,9 @@ if __name__ == "__main__":
     # clear out the gradients. Quite trivial, but might provide subtle help for a larger model.
     loss.backward() # calculating the backprob to get the gradients
     optimizer.step() # updating the parameters with gradients
+  print(m.generate(idx=torch.zeros((1, 1), dtype=torch.long, device=dev), max_new_tokens=300))
 
   # generating again after some training. We also want to generate tensors inside the device.
-  print(decode(m.generate(idx=torch.zeros((1, 1), dtype=torch.long, device=dev), max_new_tokens=300)[0].tolist()))
   # Logs:
   ## word embedding only
   # step 4400: train_loss 2.5221, val_loss 2.5416
